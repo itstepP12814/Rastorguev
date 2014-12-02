@@ -1,0 +1,131 @@
+#include <iostream>
+ using namespace std;
+
+class Date {
+	int day;
+	int month;
+	int year;
+	int delta;
+	int yearray[11];
+public:
+	void showDelta();
+	void showDate();
+	void input();
+	void increase();
+	void add_year();
+
+	Date() {
+		yearray[0] = 31;
+		yearray[1] = 28;
+		yearray[2] = 31;
+		yearray[3] = 30;
+		yearray[4] = 31;
+		yearray[5] = 30;
+		yearray[6] = 31;
+		yearray[7] = 31;
+		yearray[8] = 30;
+		yearray[9] = 31;
+		yearray[10] = 30;
+		yearray[11] = 31;
+	}
+
+	Date operator-(const Date &min) {
+		Date temp;
+		int count = 0;int count1 = 0;
+		for (int i = 0; i < month; i++) {
+			count += yearray[i];
+		}
+		for (int i = 0; i < min.month; i++) {
+			count1 += min.yearray[i];
+		}
+		temp.delta = (365 * year + count + day) - (365 * min.year + count1 + min.day);
+		return temp;
+	}
+
+	Date operator+(const Date &pl) {
+		Date temp;
+		int res, rest;
+		int i = 0;
+		int count = 0;
+		for (i = 1; i < month; i++) {
+			count +=yearray[i];
+		}
+		res = 365 * year + count + day + pl.delta;
+		temp.year = res / 365;
+		rest = res % 365;
+		i = 0;
+		while (rest >yearray[i]) {
+			rest -= yearray[i];
+			i++;
+		}
+		temp.month = i + 1;
+		temp.day = rest;
+		return temp;
+	}
+
+	~Date() {};
+};
+
+void Date::showDelta() {
+	cout << "The difference between the dates is " << delta << " days.\n\n";
+}
+
+void Date::showDate() {
+	cout << "The new date is: " << day << "." << month << "." << year << "\n\n";
+}
+
+void Date::input() {
+	cout << "Enter a day:\n";
+	cin >> day;
+	cout << "Enter a month:\n";
+	cin >> month;
+	cout << "Enter an year:\n";
+	cin >> year;
+	cout << "\n";
+}
+
+void Date::increase() {
+	cout << "How many days do you want to add?\n";
+	cin >> delta;
+	cout << "\n";
+}
+
+void main() {
+	int sel, go_on = 1;
+	Date x;
+	Date y;
+	Date z;
+	while (go_on) {
+		cout << "What would you like to do?\n";
+		cout << "1. To find a difference between two dates\n";
+		cout << "2. To increase a date\n";
+		cin >> sel;
+		while (sel < 1 || sel > 2) {
+			cout << "Wrong digit! Enter 1 or 2!\n";
+			cin >> sel;
+		}
+		system("cls");
+		switch (sel) {
+		case 1:
+			x.input();
+			y.input();
+			z = x - y;
+			z.showDelta();
+			break;
+		case 2:
+			x.input();
+			y.increase();
+			z = x + y;
+			z.showDate();
+			break;
+		}
+		cout << "\n\n";
+		cout << "Anything else? 1 - yes, 0 - no\n";
+		cin >> go_on;
+		while (go_on < 0 || go_on > 1) {
+			cout << "Wrong digit! Enter 1 (yes) or 0 (no)\n";
+			cin >> go_on;
+		}
+		system("cls");
+	}
+}
