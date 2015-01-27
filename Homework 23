@@ -1,0 +1,138 @@
+#include<iostream>
+#include <time.h>
+using namespace std;
+
+class Array
+{
+private:
+	int*array_data;
+	int size_array;
+public:
+	Array();
+	Array(Array& object);
+	~Array();
+	void Show_Array();
+
+	int& operator[](int number)
+	{
+		return array_data[number];
+	}
+	Array& operator =(const Array& object)
+	{
+		for (int i = 0; i< size_array; i++)
+		{
+			array_data[i] = object.array_data[i];
+
+		}
+		return *this;
+	}
+	Array& operator +(const Array& object)
+	{
+		for (int i = 0; i< size_array; i++)
+		{
+			array_data[i] += object.array_data[i];
+
+		}
+		return *this;
+	}
+
+	Array& operator -(const Array& object){
+		for (int i = 0; i< size_array; i++)
+		{
+			array_data[i] -= object.array_data[i];
+
+		}
+		return *this;
+	}
+	
+	
+
+	Array &operator++()
+
+		{
+			size_array += 1;
+			array_data = (int*)realloc(array_data, size_array * sizeof(int));
+			array_data[size_array - 1] = array_data[size_array - 2] + 1;
+			return *this;
+		}
+	Array &operator--()	{
+
+			size_array -= 1;
+			array_data = (int*)realloc(array_data, size_array * sizeof(int));
+			return *this;
+		}
+
+	void Initial_Array();
+};
+
+
+Array::Array()
+{
+	cout << "Введите количество элементов вашего массива : ";
+	int temp_size = 0;
+	cin >> temp_size;
+
+	if (temp_size>0)
+	{
+		array_data = new int[temp_size];
+		size_array = temp_size;
+	}
+
+	else { cout << "Ошибка границ массива "; }
+
+	cout << endl;
+
+
+}
+
+Array::Array(Array& object)
+{
+
+}
+
+
+Array :: ~Array()
+{
+	delete[] array_data;
+}
+
+void Array::Show_Array()
+{
+	cout << "Ваш массив : ";
+
+	for (int i = 0; i<size_array; i++)
+	{
+	
+		cout << array_data[i] << ", ";
+	}
+
+	cout << endl;
+}
+
+void Array::Initial_Array()
+{
+	
+	for (int i = 0; i < size_array; i++) {
+		array_data[i] = rand() % 10;
+		
+	}
+
+}
+
+
+
+void main()
+{
+	srand(time(NULL));
+	setlocale(LC_ALL, "Russian");
+	Array x;
+	x.Initial_Array();
+	x.Show_Array();
+	Array y;
+	y.Initial_Array();
+	y.Show_Array();
+	Array c;
+	c = x-y;
+	c.Show_Array();
+
+}
